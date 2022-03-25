@@ -11,7 +11,8 @@ on:
   pull_request:
     types: [closed]
   
-
+env: 
+  name: Dipak
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "greet"
@@ -23,8 +24,17 @@ jobs:
     steps:
     # Runs a single command using the runners shell
     - name: Send greeting
-      run: echo "Hello ${{ github.event.inputs.name }}"
+      run: echo "Hello $name ${{ github.event.inputs.name }}"
     - name: Run a multi-line script 
       run:
         echo Add other actions to build
         echo test, and deploy your project
+        echo Actor:${{ github.actor }}
+        echo Committed By::${{ github.event.commits[0].author.name }}
+  dump:
+    runs-on: ubuntu-latest
+    steps:
+      - env: 
+          GITHUB_CONTEXT: ${{ toJson(github.actor) }}
+        run: echo "$GITHUB_CONTEXT"
+        
